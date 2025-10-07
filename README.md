@@ -194,7 +194,7 @@ Presenter - презентер содержит основную логику п
 `address: string` — адрес доставки.
 
 Методы класса:
-`setPayment(payment: TPayment): void` - сохраняет данные об оплате. Принимает строку типа TPayment.
+`setPayment(payment: TPayment): void` - сохраняет данные об оплате. Принимает строку типа `TPayment`.
 
 `setEmail(email: string): void` - сохраняет email. Принимает строку.
 
