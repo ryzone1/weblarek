@@ -3,8 +3,11 @@ import { apiProducts } from './utils/data';
 import { BuyerModel } from './components/base/Models/BuyerModel';
 import { CartModel} from './components/base/Models/CartModel';
 import { CatalogModel } from './components/base/Models/CatalogModel';
+import { Api } from './components/base/Api';
+import { ApiService } from './components/base/Models/ApiService';
+import { API_URL } from './utils/constants';
 
-console.log('=== Тест CatalogModel ===');
+console.log('Тест CatalogModel');
 const catalogModel = new CatalogModel();
 catalogModel.setProducts(apiProducts.items);
 console.log('Все товары в каталоге:', catalogModel.getProducts());
@@ -16,7 +19,7 @@ console.log('Выбранный товар:', catalogModel.getSelectedProduct())
 const productId = firstProduct.id;
 console.log(`Товар с id ${productId}:`, catalogModel.getProductById(productId));
 
-console.log('=== Тест CartModel ===');
+console.log('Тест CartModel');
 const cartModel = new CartModel();
 
 const product1 = apiProducts.items[0];
@@ -36,13 +39,13 @@ console.log('Товары в корзине после удаления:', cartM
 cartModel.clear();
 console.log('Корзина после очистки:', cartModel.getItems());
 
-console.log('=== Тест BuyerModel ===');
+console.log('Тест BuyerModel');
 const buyerModel = new BuyerModel();
 
 buyerModel.setPayment('card');
 buyerModel.setEmail('example@test.com');
 buyerModel.setPhone('+71234567890');
-buyerModel.setAddress('ул. Пушкина, д. 1');
+buyerModel.setAddress('ул. Пушкина, д. Колотушкина');
 
 console.log('Данные покупателя:', buyerModel.getData());
 
@@ -52,3 +55,15 @@ buyerModel.clear();
 console.log('Данные покупателя после очистки:', buyerModel.getData());
 
 console.log('Ошибки валидации после очистки:', buyerModel.validate());
+
+const api = new Api(API_URL);
+const apiService = new ApiService(api);
+
+apiService.getProducts()
+    .then(products => {
+        catalogModel.setProducts(products);
+        console.log('Полученный каталог:', catalogModel.getProducts());
+    })
+    .catch(error => {
+        console.error('Ошибка при получении товаров:', error);
+    });

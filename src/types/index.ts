@@ -22,3 +22,17 @@ export interface IBuyer {
   phone: string;
   address: string;
 }
+
+export interface IProductListResponse {
+    items: IProduct[];
+}
+
+export interface IOrder extends IBuyer {
+    total: number;
+    items: string[];
+}
+
+export interface IOrderResult {
+    id: string;
+    total: number;
+}
