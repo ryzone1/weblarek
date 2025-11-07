@@ -2,6 +2,10 @@
 @use "mixins";
 @use 'sass:color';
 
+.emptytext {
+  color: rgb(89, 99, 113);
+}
+
 .form {
   @include mixins.flex(column);
   gap: 1.5rem;
