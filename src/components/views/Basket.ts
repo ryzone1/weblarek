@@ -28,22 +28,19 @@ export class Basket extends Component<IBasketData> {
 
 
     set items(items: HTMLElement[]) {
-        // Очищаем список
         this.list.replaceChildren(...items);
-        // Показываем/скрываем список и сообщение в зависимости от количества элементов
         if (items.length === 0) {
-            this.list.hidden = true; // Скрываем список
-            this.emptyMessageElement.hidden = false; // Показываем сообщение
-            this.button.disabled = true; // Делаем кнопку "Оформить" неактивной
+            this.list.hidden = true; 
+            this.emptyMessageElement.hidden = false; 
+            this.button.disabled = true; 
         } else {
-            this.list.hidden = false; // Показываем список
-            this.emptyMessageElement.hidden = true; // Скрываем сообщение
-            this.button.disabled = false; // Делаем кнопку "Оформить" активной
+            this.list.hidden = false; 
+            this.emptyMessageElement.hidden = true; 
+            this.button.disabled = false; 
         }
     }
 
 set total(value: number) {
-    console.log('DEBUG: Basket.set total вызван с', value); // <-- Отладка
     this.setText(this.totalElement, `${value} синапсов`);
 }
 

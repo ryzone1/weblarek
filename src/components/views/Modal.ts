@@ -44,8 +44,8 @@ export class Modal extends Component<IModalData> {
 
     // Исправленный синтаксис: data: IModalData
     render( data: IModalData): HTMLElement {
-        super.render(data); // Вызов базового render для совместимости
-        this.openModal(data.content); // Используем переданное содержимое
+        super.render(data);
+        this.openModal(data.content);
         return this.container;
     }
 }
