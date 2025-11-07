@@ -1,6 +1,9 @@
 @use "variables" as *;
 @use "mixins";
 
+.page_locked {
+  overflow: hidden;
+}
 .modal {
   @include mixins.sublayer;
   // height: max-content;

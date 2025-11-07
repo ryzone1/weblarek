@@ -36,3 +36,17 @@ export interface IOrderResult {
     id: string;
     total: number;
 }
+
+export interface IOrderFormState {
+    payment: TPayment;
+    address: string;
+    errors: string[];
+    valid: boolean;
+}
+
+export interface IContactFormState {
+    email: string;
+    phone: string;
+    errors: string[];
+    valid: boolean;
+}
