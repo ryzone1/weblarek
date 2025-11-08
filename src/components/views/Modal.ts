@@ -9,11 +9,17 @@ interface IModalData {
 export class Modal extends Component<IModalData> {
     protected closeButton: HTMLButtonElement;
     protected contentContainer: HTMLElement;
+    private escapeHandler: (event: KeyboardEvent) => void;
 
     constructor(protected events: IEvents, container: HTMLElement) {
         super(container);
         this.closeButton = ensureElement<HTMLButtonElement>('.modal__close', container);
         this.contentContainer = ensureElement<HTMLElement>('.modal__content', container);
+        this.escapeHandler = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                this.closeModal();
+            }
+        };
 
         this.closeButton.addEventListener('click', this.closeModal.bind(this));
         this.container.addEventListener('mousedown', (event: MouseEvent) => {
@@ -21,28 +27,22 @@ export class Modal extends Component<IModalData> {
                 this.closeModal();
             }
         });
-        // Закрытие по Escape
-        document.addEventListener('keydown', (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
-                this.closeModal();
-            }
-        });
+
     }
 
     closeModal(): void {
         this.container.classList.remove('modal_active');
-        document.body.classList.remove('page_locked');
         this.events.emit('modal:close');
+        document.removeEventListener('keydown', this.escapeHandler);
     }
 
     openModal(content: HTMLElement): void {
         this.contentContainer.replaceChildren(content);
         this.container.classList.add('modal_active');
-        document.body.classList.add('page_locked');
         this.events.emit('modal:open');
+        document.addEventListener('keydown', this.escapeHandler);
     }
 
-    // Исправленный синтаксис: data: IModalData
     render( data: IModalData): HTMLElement {
         super.render(data);
         this.openModal(data.content);

@@ -1,15 +1,14 @@
 import { IProduct } from '../../types/index';
-import { IEvents } from '../base/Events'; // Добавляем импорт IEvents
+import { IEvents } from '../base/Events';
 
 export class CatalogModel {
   private products: IProduct[] = [];
   private selectedProduct: IProduct | null = null;
 
-  constructor(private events: IEvents) {} // Принимаем брокер событий
+  constructor(private events: IEvents) {}
 
   setProducts(products: IProduct[]): void {
     this.products = products;
-    // Генерируем событие при установке списка продуктов
     this.events.emit('catalog:products:changed', { products: this.getProducts() });
   }
 
@@ -23,7 +22,6 @@ export class CatalogModel {
 
   setSelectedProduct(product: IProduct | null): void {
     this.selectedProduct = product;
-    // Генерируем событие при установке выбранного продукта
     this.events.emit('catalog:selected:changed', { selectedProduct: this.getSelectedProduct() });
   }
 

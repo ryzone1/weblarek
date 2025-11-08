@@ -1,21 +1,19 @@
 import { IProduct } from '../../types/index';
-import { IEvents } from '../base/Events'; // Добавляем импорт IEvents
+import { IEvents } from '../base/Events';
 
 export class CartModel {
   private items: IProduct[] = [];
 
-  constructor(private events: IEvents) {} // Принимаем брокер событий
+  constructor(private events: IEvents) {} 
 
   getItems(): IProduct[] {
     return this.items;
   }
 
   addItem(product: IProduct): void {
-    // Проверим, что товара ещё нет в корзине, чтобы избежать дубликатов (если это правило модели)
     if (!this.hasItem(product.id)) {
       this.items.push(product);
-      // Генерируем событие при добавлении товара
-      this.events.emit('cart:item:added', { item: product, items: this.getItems() });
+      this.events.emit('cart:changed', { items: this.getItems() });
     }
   }
 
@@ -23,15 +21,13 @@ export class CartModel {
     const index = this.items.findIndex(item => item.id === product.id);
     if (index !== -1) {
       this.items.splice(index, 1);
-      // Генерируем событие при удалении товара
-      this.events.emit('cart:item:removed', { item: product, items: this.getItems() });
+      this.events.emit('cart:changed', { items: this.getItems() });
     }
   }
 
   clear(): void {
     this.items = [];
-    // Генерируем событие при очистке корзины
-    this.events.emit('cart:cleared', { items: this.getItems() });
+    this.events.emit('cart:changed', { items: this.getItems() });
   }
 
   getTotalPrice(): number {

@@ -1,62 +1,56 @@
 import { IBuyer, TPayment } from '../../types/index';
-import { IEvents } from '../base/Events'; // Добавляем импорт IEvents
+import { IEvents } from '../base/Events';
 
 export class BuyerModel {
-  private payment: TPayment = '';
-  private email: string = '';
-  private phone: string = '';
-  private address: string = '';
+  private data: IBuyer = {
+      payment: '',
+      email: '',
+      phone: '',
+      address: '',
+  };
 
-  constructor(private events: IEvents) {} // Принимаем брокер событий
+  constructor(private events: IEvents) {}
 
   setPayment(payment: TPayment): void {
-    this.payment = payment;
-    // Генерируем событие при изменении оплаты
-    this.events.emit('buyer:payment:changed', { payment: this.getData().payment });
+    this.data.payment = payment;
+    this.events.emit('buyer:payment:changed', { payment: this.data.payment });
   }
 
   setEmail(email: string): void {
-    this.email = email;
-    // Генерируем событие при изменении email
-    this.events.emit('buyer:email:changed', { email: this.getData().email });
+    this.data.email = email;
+    this.events.emit('buyer:email:changed', { email: this.data.email });
   }
 
   setPhone(phone: string): void {
-    this.phone = phone;
-    // Генерируем событие при изменении телефона
-    this.events.emit('buyer:phone:changed', { phone: this.getData().phone });
+    this.data.phone = phone;
+    this.events.emit('buyer:phone:changed', { phone: this.data.phone });
   }
 
   setAddress(address: string): void {
-    this.address = address;
-    // Генерируем событие при изменении адреса
-    this.events.emit('buyer:address:changed', { address: this.getData().address });
+    this.data.address = address;
+    console.log('DEBUG: BuyerModel.setAddress вызван, новое значение:', address); 
+    this.events.emit('buyer:address:changed', { address: this.data.address });
   }
 
   getData(): IBuyer {
-    return {
-      payment: this.payment,
-      email: this.email,
-      phone: this.phone,
-      address: this.address,
-    };
+    return { ...this.data };
   }
 
   clear(): void {
-    this.payment = '';
-    this.email = '';
-    this.phone = '';
-    this.address = '';
-    // Генерируем событие при очистке данных покупателя
-    this.events.emit('buyer:cleared', { buyerData: this.getData() });
+    this.data = {
+        payment: '',
+        email: '',
+        phone: '',
+        address: '',
+    };
   }
 
   validate(): { [key in keyof IBuyer]?: string } {
     const errors: { [key in keyof IBuyer]?: string } = {};
-    if (!this.payment) errors.payment = 'Не выбран вид оплаты';
-    if (!this.email) errors.email = 'Укажите емэйл';
-    if (!this.phone) errors.phone = 'Укажите телефон';
-    if (!this.address) errors.address = 'Укажите адрес';
+    if (!this.data.payment) errors.payment = 'Не выбран вид оплаты';
+    if (!this.data.email) errors.email = 'Укажите емэйл';
+    if (!this.data.phone) errors.phone = 'Укажите телефон';
+    if (!this.data.address) errors.address = 'Укажите адрес';
     return errors;
   }
 }

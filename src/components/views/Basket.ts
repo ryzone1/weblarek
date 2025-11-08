@@ -44,10 +44,4 @@ set total(value: number) {
     this.setText(this.totalElement, `${value} синапсов`);
 }
 
-    render(data: IBasketData): HTMLElement {
-        super.render(data);
-        this.items = data.items;
-        this.total = data.total;
-        return this.container;
-    }
 }
